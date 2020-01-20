@@ -3,7 +3,8 @@ const {
   getAccounts,
   getAccountById,
   insertAccount,
-  updateAccount
+  updateAccount,
+  removeAccount
 } = require("./accounts-model");
 const router = express.Router();
 
@@ -41,6 +42,15 @@ router.put("/:id", async (req, res) => {
     const changes = req.body;
     const updatedAccount = await updateAccount(id, changes);
     res.status(200).json(updatedAccount);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const data = await removeAccount(req.params.id);
+    res.status(200).json({ message: `${data} account has been deleted` });
   } catch (e) {
     console.log(e);
   }

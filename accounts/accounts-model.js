@@ -22,9 +22,18 @@ function updateAccount(id, changes) {
     .update(changes)
     .then(count => (count > 0 ? getAccountById(id) : null));
 }
+
+function removeAccount(id) {
+  return db("accounts")
+    .where({ id })
+    .del();
+}
+
+
 module.exports = {
   getAccounts,
   getAccountById,
   insertAccount,
-  updateAccount
+  updateAccount,
+  removeAccount
 };
