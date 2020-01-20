@@ -11,15 +11,21 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const allAccounts = await getAccounts();
-    res.status(200).json(allAccounts);
+    const sort = req.query;    
+    if (Object.entries(sort).length !== 0) {
+      const allAccountsSorted = await getAccounts(sort);
+      res.status(200).json(allAccountsSorted);
+    } else {
+      const allAccounts = await getAccounts();
+      res.status(200).json(allAccounts);
+    }
   } catch (e) {
     console.log(e);
   }
 });
 
 router.get("/:id", validateAccountID, (req, res) => {
-  res.status(200).json(req.account)
+  res.status(200).json(req.account);
 });
 
 router.post("/", validatePostData, async (req, res) => {

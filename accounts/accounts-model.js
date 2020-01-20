@@ -1,7 +1,13 @@
 const db = require("../data/dbConfig");
 
-function getAccounts() {
-  return db("accounts");
+function getAccounts(sort) {
+  if (sort) {
+    return db("accounts")
+      .orderBy(sort.sortby, sort.sortdir)
+      .limit(sort.limit);
+  } else {
+    return db("accounts");
+  }
 }
 
 function getAccountById(id) {
@@ -28,7 +34,6 @@ function removeAccount(id) {
     .where({ id })
     .del();
 }
-
 
 module.exports = {
   getAccounts,
