@@ -6,6 +6,7 @@ const {
   updateAccount,
   removeAccount
 } = require("./accounts-model");
+const { validateAccountID, validatePostData } = require("../middlewares");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -17,16 +18,11 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  try {
-    const account = await getAccountById(req.params.id);
-    res.status(200).json(account);
-  } catch (e) {
-    console.log(e);
-  }
+router.get("/:id", validateAccountID, (req, res) => {
+  res.status(200).json(req.account)
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validatePostData, async (req, res) => {
   try {
     const newAccount = req.body;
     const data = await insertAccount(newAccount);
@@ -36,7 +32,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", validateAccountID, validatePostData, async (req, res) => {
   try {
     const { id } = req.params;
     const changes = req.body;
@@ -47,7 +43,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", validateAccountID, async (req, res) => {
   try {
     const data = await removeAccount(req.params.id);
     res.status(200).json({ message: `${data} account has been deleted` });
