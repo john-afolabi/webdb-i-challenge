@@ -2,7 +2,8 @@ const express = require("express");
 const {
   getAccounts,
   getAccountById,
-  insertAccount
+  insertAccount,
+  updateAccount
 } = require("./accounts-model");
 const router = express.Router();
 
@@ -30,6 +31,17 @@ router.post("/", async (req, res) => {
     const data = await insertAccount(newAccount);
     res.status(201).json(data);
   } catch (error) {
+    console.log(e);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const changes = req.body;
+    const updatedAccount = await updateAccount(id, changes);
+    res.status(200).json(updatedAccount);
+  } catch (e) {
     console.log(e);
   }
 });

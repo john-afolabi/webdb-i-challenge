@@ -13,11 +13,18 @@ function getAccountById(id) {
 function insertAccount(account) {
   return db("accounts")
     .insert(account)
-    .then(([id]) => getAccountById(id))
+    .then(([id]) => getAccountById(id));
 }
 
+function updateAccount(id, changes) {
+  return db("accounts")
+    .where({ id })
+    .update(changes)
+    .then(count => (count > 0 ? getAccountById(id) : null));
+}
 module.exports = {
   getAccounts,
   getAccountById,
-  insertAccount
+  insertAccount,
+  updateAccount
 };
