@@ -1,5 +1,9 @@
 const express = require("express");
-const { getAccounts, getAccountById } = require("./accounts-model");
+const {
+  getAccounts,
+  getAccountById,
+  insertAccount
+} = require("./accounts-model");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -19,3 +23,15 @@ router.get("/:id", async (req, res) => {
     console.log(e);
   }
 });
+
+router.post("/", async (req, res) => {
+  try {
+    const newAccount = req.body;
+    const data = await insertAccount(newAccount);
+    res.status(201).json(data);
+  } catch (error) {
+    console.log(e);
+  }
+});
+
+module.exports = router;
